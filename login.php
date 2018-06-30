@@ -12,15 +12,9 @@
 <br />
 <label>Password: </label><input type="password" placeholder="password" id="password_text" name="password_text"><a href="#">Forgot Password</a>
 <br />
-<button onClick="encryptPass();">Login</button>
+<button onClick="encryptPassLogin();">Login</button>
 
-<script>
-	function encryptPass() {
-		var user = document.getElementById("username_text").value;
-		
-		window.location.href = "php/login_validate.php?username=" + user + "&password=" + sha256(document.getElementById("password_text").value);
-	}
-</script>
+<script src="js/password_encryption.js"></script>
 
 </body>
 </html>
