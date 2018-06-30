@@ -5,5 +5,6 @@
 
 <body>
 <?php include("inc/navigation.php"); ?>
+
 </body>
 </html>
