@@ -16,4 +16,5 @@
 	
 	<script type="text/javascript" src="js/sha256.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/navigation.css">
+	<link rel="stylesheet" type="text/css" href="css/breadcrumbs.css">
 </head>

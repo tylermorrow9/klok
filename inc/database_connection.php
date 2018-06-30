@@ -1,11 +1,9 @@
 <?php
-	$servername = "localhost";
-	$username = "devapplin1";
-	$password = "OOX6PjkAxiVnExWw";
-	$dbname = "development_lin1";
+	#set properties
+	require("../properties.php");
 
 	// Create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
+	$conn = new mysqli($DB_CONNECTION_SERVER, $DB_CONNECTION_USER, $DB_CONNECTION_PASS, $DB_CONNECTION_DB);
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);

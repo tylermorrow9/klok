@@ -7,6 +7,8 @@
 ?>
 
 <body>
-
+	<div class="topnav">
+		<a href="login.php">Login</a>
+	</div>
 </body>
 </html>

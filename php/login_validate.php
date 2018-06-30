@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	
+	#set sessionid if not set
 	if (isset($_SESSION["sessionid"])) {
 		//$sessionid = $_SESSION["sessionid"];
 		echo "set";
@@ -8,23 +9,14 @@
 		$_SESSION["sessionid"] = generateRandomString();
 		echo "not set";
 	}
-	
-	function generateRandomString($length = 200) {
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
-		}
-		return $randomString;
-	}
 
 	$login_username = $_GET["username"];
 	$login_password = $_GET["password"];
 	$database_username = "";
 	$database_password = "";
 	
-	include("../inc/database_connection.php");
+	#connect to the database
+	require("../inc/database_connection.php");
 
 	$sql = "SELECT USERNAME, PASSWORD FROM CONTACT WHERE USERNAME = '".$login_username."'";
 	$result = $conn->query($sql);
@@ -61,5 +53,13 @@
 		header("Location: ../login.php?msg=".$msg);
 	}
 	
-	
+	function generateRandomString($length = 200) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+	}
 ?>
