@@ -7,5 +7,7 @@
 	
 	#time to set for timeout of user session
 	$SESSION_TIMEOUT_IN_SEC = 1800;
-	
+
+	#limit the username string character limit
+	$USERNAME_LOGIN_CHAR_LIMIT = 19;
 ?>

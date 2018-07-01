@@ -1,4 +1,8 @@
 <?php
+	#connect to the database
+	require("../inc/database_connection.php");
+	require("../properties.php");
+
 	session_start();
 	
 	#set sessiontoken if not set
@@ -6,21 +10,46 @@
 		
 	} else {
 		$_SESSION["sessiontoken"] = generateRandomString();
-		
+		session_regenerate_id(true);		
 	}
 
 	$login_username = $_GET["username"];
 	$login_password = $_GET["password"];
-	
-	#connect to the database
-	require("../inc/database_connection.php");
 
-	$sql = "SELECT USERNAME, PASSWORD FROM CONTACT WHERE USERNAME = '".$login_username."'";
+	//SANITIZE LOGIN STRING
+	$login_username = filter_var($login_username, FILTER_SANITIZE_STRING);
+
+	if ($login_username > $USERNAME_LOGIN_CHAR_LIMIT) {
+		$login_username = substr($login_username, 0, $USERNAME_LOGIN_CHAR_LIMIT);
+	}
+
+	// Create connection
+	$conn = new mysqli($server, $user, $pass, $db);
+
+	$sql = "SELECT ID FROM LOGIN ORDER BY ID ASC";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while($row = $result->fetch_assoc()) {
+			$database_loginid = $row["ID"];
+			$database_loginid += 1;
+		}
+	} else {
+		echo "0 results";
+	}
+	$conn->close();
+
+	// Create connection
+	$conn = new mysqli($server, $user, $pass, $db);
+
+	$sql = "SELECT ID, USERNAME, PASSWORD FROM CONTACT WHERE USERNAME = '".$login_username."'";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+		// output data of each row
+		while($row = $result->fetch_assoc()) {
+			$database_userid = $row["ID"];
 			$database_username = $row["USERNAME"];
 			$database_password = $row["PASSWORD"];
 		}
@@ -33,12 +62,39 @@
 	if ($login_username === $database_username) {
 		if ($login_password === $database_password) {
 			//Login successful
+
+			// Create connection
+			$conn = new mysqli($server, $user, $pass, $db);
+
+			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 1, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."')";
+
+			if ($conn->query($sql) === TRUE) {
+			    echo "New record created successfully";
+			} else {
+			    #echo "Error: " . $sql . "<br>" . $conn->error;
+			}
+
+			$conn->close();
 			
 			$msg = "Login Success";
 			//redirect URL forward in URL
 			header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
 		} else {
 			//Do not login and return error
+
+			// Create connection
+			$conn = new mysqli($server, $user, $pass, $db);
+
+			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."')";
+
+			if ($conn->query($sql) === TRUE) {
+			    echo "New record created successfully";
+			} else {
+			    #echo "Error: " . $sql . "<br>" . $conn->error;
+			}
+
+			$conn->close();
+
 			$msg = "Username or Password does not match";
 			//redirect URL back to index page with error in URL
 			header("Location: ../login.php?msg=".$msg);
@@ -59,5 +115,22 @@
 			$randomString .= $characters[rand(0, $charactersLength - 1)];
 		}
 		return $randomString;
+	}
+
+	#get the remote or local ip address of the logging in user
+	function getRealIpAddr() {
+	    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+	    {
+	      $ip=$_SERVER['HTTP_CLIENT_IP'];
+	    }
+	    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+	    {
+	      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+	    }
+	    else
+	    {
+	      $ip=$_SERVER['REMOTE_ADDR'];
+	    }
+	    return $ip;
 	}
 ?>
