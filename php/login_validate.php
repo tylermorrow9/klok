@@ -1,13 +1,12 @@
 <?php
 	session_start();
 	
-	#set sessionid if not set
-	if (isset($_SESSION["sessionid"])) {
-		//$sessionid = $_SESSION["sessionid"];
-		echo "set";
+	#set sessiontoken if not set
+	if (isset($_SESSION["sessiontoken"])) {
+		
 	} else {
-		$_SESSION["sessionid"] = generateRandomString();
-		echo "not set";
+		$_SESSION["sessiontoken"] = generateRandomString();
+		
 	}
 
 	$login_username = $_GET["username"];
@@ -39,7 +38,7 @@
 			
 			$msg = "Login Success";
 			//redirect URL forward in URL
-			header("Location: ../dashboard.php?tok=".$_SESSION["sessionid"]);
+			header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
 		} else {
 			//Do not login and return error
 			$msg = "Username or Password does not match";
@@ -53,6 +52,7 @@
 		header("Location: ../login.php?msg=".$msg);
 	}
 	
+	#used to generate the token
 	function generateRandomString($length = 200) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$charactersLength = strlen($characters);

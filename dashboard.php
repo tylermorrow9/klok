@@ -5,6 +5,6 @@
 
 <body>
 <?php include("inc/navigation.php"); ?>
-hello
+
 </body>
 </html>
