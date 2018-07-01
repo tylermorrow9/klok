@@ -16,9 +16,10 @@
 	$login_username = $_GET["username"];
 	$login_password = $_GET["password"];
 
-	//SANITIZE LOGIN STRING
+	//SANITIZE LOGIN STRING to remove HTML tags in response
 	$login_username = filter_var($login_username, FILTER_SANITIZE_STRING);
 
+	#if user inputs more than the allotted amount of characters in the username textbox, the string will be shortened
 	if ($login_username > $USERNAME_LOGIN_CHAR_LIMIT) {
 		$login_username = substr($login_username, 0, $USERNAME_LOGIN_CHAR_LIMIT);
 	}
@@ -66,7 +67,7 @@
 			// Create connection
 			$conn = new mysqli($server, $user, $pass, $db);
 
-			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 1, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."')";
+			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 1, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '')";
 
 			if ($conn->query($sql) === TRUE) {
 			    echo "New record created successfully";
@@ -85,7 +86,7 @@
 			// Create connection
 			$conn = new mysqli($server, $user, $pass, $db);
 
-			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."')";
+			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '')";
 
 			if ($conn->query($sql) === TRUE) {
 			    echo "New record created successfully";

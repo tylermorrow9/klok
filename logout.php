@@ -1,7 +1,7 @@
 <?php 
 	require("inc/header.php");
 	
-	session_start();
+	require("php/logout_validation.php");
 
 	#end current session
 	session_unset(); 
