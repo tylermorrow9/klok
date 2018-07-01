@@ -1,9 +1,5 @@
 <?php 
 	require("inc/header.php");
-	
-	#end any previous sessions
-	session_unset(); 
-	session_destroy();
 ?>
 
 <body>

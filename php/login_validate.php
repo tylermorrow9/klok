@@ -11,8 +11,6 @@
 
 	$login_username = $_GET["username"];
 	$login_password = $_GET["password"];
-	$database_username = "";
-	$database_password = "";
 	
 	#connect to the database
 	require("../inc/database_connection.php");
