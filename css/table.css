@@ -5,3 +5,8 @@
 .active-user-div {
 	border: solid;
 }
+
+td {
+	border: solid;
+	width: 20%;
+}

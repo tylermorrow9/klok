@@ -18,9 +18,10 @@
 	    #DEBUG echo "session created";
 	} else if (time() - $_SESSION["sessioncreated"] > $SESSION_TIMEOUT_IN_SEC) {
 	    #session started more than 30 minutes ago
-	    
+
 	    #normally would be "../php/logout_validation.php", but since root level files are using, it is properly used as "php/logout_validation.php"
 	    require("php/logout_validation.php");
+	    
 	    #unset all session variables
 		session_unset();
 		#destroy current session

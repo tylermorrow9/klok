@@ -86,7 +86,7 @@
 			// Create connection
 			$conn = new mysqli($server, $user, $pass, $db);
 
-			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '')";
+			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '".date('y-m-d H:i:s')."')";
 
 			if ($conn->query($sql) === TRUE) {
 			    echo "New record created successfully";

@@ -5,6 +5,9 @@
 	//echo $reset_username." ".$reset_password;
 	
 	include("../inc/database_connection.php");
+
+	// Create connection
+	$conn = new mysqli($server, $user, $pass, $db);
 	
 	$sql = "UPDATE CONTACT SET PASSWORD = '".$reset_password."' WHERE USERNAME = '".$reset_username."'";
 	

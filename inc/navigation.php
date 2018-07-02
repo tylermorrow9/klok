@@ -4,7 +4,7 @@
 	<a href="<?php echo 'schedule.php?tok='.$_SESSION["sessiontoken"]; ?>">Schedule</a>
 	<a href="<?php echo 'payroll.php?tok='.$_SESSION["sessiontoken"]; ?>">Payroll</a>
 	<div class="dropdown">
-		<button class="dropbtn">Account <i class="fa fa-caret-down"></i></button>
+		<button class="dropbtn">Account</button>
 		<div class="dropdown-content">
 			<a href="<?php echo 'account.php?tok='.$_SESSION["sessiontoken"]; ?>">Account</a>
 			<a href="<?php echo 'teams.php?tok='.$_SESSION["sessiontoken"]; ?>">Teams</a>
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="dropdown">
-		<button class="dropbtn">Administration <i class="fa fa-caret-down"></i></button>
+		<button class="dropbtn">Administration</button>
 		<div class="dropdown-content">
 			<a href="<?php echo 'administration.php?tok='.$_SESSION["sessiontoken"]; ?>">Administration</a>
 			<a href="<?php echo 'data_manager.php?tok='.$_SESSION["sessiontoken"]; ?>">Data Manager</a>

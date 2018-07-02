@@ -1,0 +1,22 @@
+div.xscroll {
+    width: 99.5%;
+    height: 60vh;
+    overflow: auto;
+}
+
+#rcorners {
+    border-radius: 15px;
+    background: #73AD21;
+    padding: 20px; 
+    margin: 20px;
+    width: 150px;
+    height: 75px; 
+} 
+
+button {
+	font-size:x-small;
+}
+
+.open_tasks {
+    margin: 10px;
+}
