@@ -1,10 +1,3 @@
-//referenced in login.php page
-function encryptPassLogin() {
-	var user = document.getElementById("username_text").value;
-	
-	window.location.href = "php/login_validate.php?username=" + user + "&password=" + sha256(document.getElementById("password_text").value);
-}
-
 //referenced in password.php page
 function encryptPass() {
 	

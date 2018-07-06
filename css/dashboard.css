@@ -1,7 +1,8 @@
 div.xscroll {
-    width: 99.5%;
+    width: 98%;
     height: 60vh;
     overflow: auto;
+    padding: 10px;
 }
 
 #rcorners {
