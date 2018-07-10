@@ -1,7 +1,7 @@
 <?php
-	#connect to the database
-	require("../inc/database_connection.php");
 	require("../properties.php");
+	require("encryption.php");
+	require("../inc/decrypt_db_creds.php");
 
 	session_start();
 	

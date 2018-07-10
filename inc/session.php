@@ -10,7 +10,7 @@
 	} else {
 		//unset sessiontoken
 		#DEBUG echo "session not set";
-		header("Location: http://192.168.1.100:8080/klok/login.php");
+		header("Location: login.php");
 	}
 
 	if (!isset($_SESSION["sessioncreated"])) {

@@ -1,7 +1,4 @@
 <?php
-	#include encryption device
-	require("../php/encryption.php");
-	
 	#decrypt all database connection details
 	$server = encrypt_decrypt('decrypt', $DB_CONNECTION_SERVER);
 	$user = encrypt_decrypt('decrypt', $DB_CONNECTION_USER);
