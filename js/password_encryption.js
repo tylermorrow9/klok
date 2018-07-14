@@ -12,18 +12,19 @@ function encryptPass() {
 
 //referenced in password.php page
 function submitPassChange() {
-	if (document.getElementById("username_text").value != "") {
+	//if (document.getElementById("username_text").value != "") {
 		var user = document.getElementById("username_text").value;
+		var id = document.getElementById("userid").value;
 		if (document.getElementById("enc_password_text").value != "") {
 			//success
 			var pass = document.getElementById("enc_password_text").value;
-			window.location.href = "php/password_reset.php?username=" + user + "&password=" + pass;
+			window.location.href = "php/password_reset.php?userid=" + id + "&username=" + user + "&password=" + pass;
 		} else {
 			//encryption box is blank
 			alert("Please generate an encrypted a Password.");
 		}
-	} else {
+	//} else {
 		//username field is blank
-		alert("Please enter a Username.");
-	}
+		//alert("Please enter a Username.");
+	//}
 }

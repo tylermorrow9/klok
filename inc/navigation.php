@@ -1,8 +1,12 @@
 <div class="navbar">
 	<a href="<?php echo 'dashboard.php?tok='.$_SESSION["sessiontoken"]; ?>">Home</a>
+	<?php if ($TIME_MODULE_ACCESS) {?>
 	<a href="<?php echo 'time.php?tok='.$_SESSION["sessiontoken"]; ?>">Time</a>
+	<?php } if ($SCHEDULE_MODULE_ACCESS) {?>
 	<a href="<?php echo 'schedule.php?tok='.$_SESSION["sessiontoken"]; ?>">Schedule</a>
+	<?php } if ($PAYROLL_MODULE_ACCESS) {?>
 	<a href="<?php echo 'payroll.php?tok='.$_SESSION["sessiontoken"]; ?>">Payroll</a>
+	<?php } ?>
 	<div class="dropdown">
 	<button class="dropbtn">Account</button>
 		<div class="dropdown-content">
@@ -23,7 +27,7 @@
 	<div class="dropdown" style="float:right;">
 	<button class="dropbtn">Details</button>
 		<div class="dropdown-content">
-			<a href="<?php echo 'administration.php?tok='.$_SESSION["sessiontoken"]; ?>">About</a>
+			<a href="<?php echo 'version.html' ?>" target="_blank">About</a>
 			<a href="<?php echo 'account.php?tok='.$_SESSION["sessiontoken"]; ?>">My Info</a>
 			<a href="logout.php">Logout</a>
 		</div>

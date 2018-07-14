@@ -76,7 +76,7 @@
 			// Create connection
 			$conn = new mysqli($server, $user, $pass, $db);
 			for ($x = 1; $x < 4;$x++) {
-				$sql = "SELECT * FROM MESSAGE WHERE CATEGORY = ".$x." AND STATUS = 1 AND EFFECTIVE_DATE < '".date('y-m-d H:i:s')."' AND EXPIRATION_DATE > '".date('y-m-d H:i:s')."' ORDER BY PRIORITY ASC";
+				$sql = "SELECT * FROM MESSAGE WHERE CATEGORY = ".$x." AND STATUS = 1 AND EFFECTIVE_DATE < '".date('m-d-Y h:i A')."' AND EXPIRATION_DATE > '".date('y-m-d H:i:s')."' ORDER BY PRIORITY ASC";
 				$result = $conn->query($sql);
 
 				if ($result->num_rows > 0) {
@@ -90,7 +90,7 @@
 						echo "</div>";
 					}
 				} else {
-					#echo date('y-m-d H:i:s');
+					
 				}
 			}
 			$conn->close();

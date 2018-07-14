@@ -1,3 +1,22 @@
+/*link styles*/
+a {
+  text-decoration: none;
+}
+
+/*Style all buttons*/
+.button {
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 /* Navbar container */
 .navbar {
   overflow: hidden;
@@ -35,7 +54,7 @@
 
 /* Add a red background color to navbar links on hover */
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
+  background-color: grey;
 }
 
 /* Dropdown content (hidden by default) */
@@ -121,6 +140,11 @@ body {
 .fakeimg {
     width: 50%;
     padding: 20px;
+}
+
+.iconimg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Add a card effect for articles */

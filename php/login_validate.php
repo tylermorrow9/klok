@@ -50,6 +50,7 @@
 	if ($result->num_rows > 0) {
 		// output data of each row
 		while($row = $result->fetch_assoc()) {
+			$_SESSION["user_id"] = $row["ID"];
 			$database_userid = $row["ID"];
 			$database_username = $row["USERNAME"];
 			$database_password = $row["PASSWORD"];
@@ -59,52 +60,57 @@
 	}
 	$conn->close();
 	
-	#validate user login
-	if ($login_username === $database_username) {
-		if ($login_password === $database_password) {
-			//Login successful
+	//ONLY LOGIN IF COMPANY HAS AN ACTIVE SYSTEM
+	if ($SYSTEM_ACTIVE) {
+		#validate user login
+		if ($login_username === $database_username) {
+			if ($login_password === $database_password) {
+				//Login successful
 
-			// Create connection
-			$conn = new mysqli($server, $user, $pass, $db);
+				// Create connection
+				$conn = new mysqli($server, $user, $pass, $db);
 
-			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 1, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '')";
+				$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 1, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '')";
 
-			if ($conn->query($sql) === TRUE) {
-			    echo "New record created successfully";
+				if ($conn->query($sql) === TRUE) {
+				    echo "New record created successfully";
+				} else {
+				    #echo "Error: " . $sql . "<br>" . $conn->error;
+				}
+
+				$conn->close();
+				
+				$msg = "Login Success";
+				//redirect URL forward in URL
+				header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
 			} else {
-			    #echo "Error: " . $sql . "<br>" . $conn->error;
-			}
+				//Do not login and return error
 
-			$conn->close();
-			
-			$msg = "Login Success";
-			//redirect URL forward in URL
-			header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
+				// Create connection
+				$conn = new mysqli($server, $user, $pass, $db);
+
+				$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '".date('y-m-d H:i:s')."')";
+
+				if ($conn->query($sql) === TRUE) {
+				    echo "New record created successfully";
+				} else {
+				    #echo "Error: " . $sql . "<br>" . $conn->error;
+				}
+
+				$conn->close();
+
+				$msg = "Username or Password does not match";
+				//redirect URL back to index page with error in URL
+				header("Location: ../login.php?msg=".$msg);
+			}
 		} else {
 			//Do not login and return error
-
-			// Create connection
-			$conn = new mysqli($server, $user, $pass, $db);
-
-			$sql = "INSERT INTO LOGIN VALUES ('".$database_loginid."', '".$database_userid."', 0, '".session_id()."', '".$_SESSION["sessiontoken"]."', '".getRealIpAddr()."', '".date('y-m-d H:i:s')."', '".date('y-m-d H:i:s')."')";
-
-			if ($conn->query($sql) === TRUE) {
-			    echo "New record created successfully";
-			} else {
-			    #echo "Error: " . $sql . "<br>" . $conn->error;
-			}
-
-			$conn->close();
-
 			$msg = "Username or Password does not match";
 			//redirect URL back to index page with error in URL
 			header("Location: ../login.php?msg=".$msg);
 		}
 	} else {
-		//Do not login and return error
-		$msg = "Username or Password does not match";
-		//redirect URL back to index page with error in URL
-		header("Location: ../login.php?msg=".$msg);
+		header("Location: ../inactive_system.php");
 	}
 	
 	#used to generate the token
