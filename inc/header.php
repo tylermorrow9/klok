@@ -1,14 +1,3 @@
-<?php /*
-	#used to expose error message via URL
-	
-	$msg = isset($_GET['msg']) ? $_GET['msg'] : '';
-
-	if ($msg != "") {
-		echo $msg."<br />";
-	}
-	*/
-?>
-
 <!DOCTYPE html>
 <html>
 <head>

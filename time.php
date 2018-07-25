@@ -19,40 +19,47 @@
 		<div class="card">
 			<h2>Check In/Check Out</h2>			
 			<?php
-				$check_status = 1;
-				$check_date = "";
+				$check_in_format = "";
+				$check_out_format = "";
 
 				// Create connection
 				$conn = new mysqli($server, $user, $pass, $db);
 
-				$sql = "SELECT CHECK_DATE, CHECK_STATUS FROM TIMETRACK WHERE USER_ID = '".$_SESSION["user_id"]."' ORDER BY CHECK_DATE ASC";
+				$sql = "SELECT STATUS, CHECK_IN_DATE, CHECK_OUT_DATE FROM TIMETRACK WHERE USER_ID = '".$_SESSION["user_id"]."' ORDER BY CHECK_IN_DATE DESC LIMIT 1";
 				$result = $conn->query($sql);
 
 				if ($result->num_rows > 0) {
 					// output data of each row
 					while($row = $result->fetch_assoc()) {
-						$check_date = strtotime($row['CHECK_DATE']);
-						$check_date_format = date('m-d-Y h:i A', $check_date);
-						$check_status = $row["CHECK_STATUS"];
+						$check_in_date = strtotime($row['CHECK_IN_DATE']);
+						$check_in_format = date('m-d-Y h:i A', $check_in_date);
+
+						$check_out_date = strtotime($row['CHECK_OUT_DATE']);
+						$check_out_format = date('m-d-Y h:i A', $check_out_date);
 					}
 				} else {
 					#echo "0 results";
 				}
 				$conn->close();
-				if ($check_date != '') {
 			?>
-			<h5>Last Check (In/Out): <?php echo $check_date_format; }?></h5>
+			<h5>Last Check In: <?php echo $check_in_format; ?></h5>
+			<h5>Last Check Out: <?php echo $check_out_format; ?></h5>
 			<form action="php/submit_time.php" method="POST">
 			<?php
-				if ($check_status == 0) {
+				if ($check_out_format == '12-31-1969 07:00 PM' || $check_out_format == '0000-00-00 00:00:00' || $check_out_format = '') {
 					//checked in status
 					echo "<p><input class='button' type='submit' name='check_out' value='Check Out'></p>";
-				} else if ($check_status == -1 || $check_status == 1) {
+				} else {
 					//checked out status
 					echo "<p><input class='button' type='submit' name='check_in' value='Check In'></p>";
 				}
 			?>
 			</form>
+		</div>
+		<div class="card">
+			<h2>New Time Record</h2>			
+			<button class='button' id="myBtn">Create Time Record</button>
+			<?php require("inc/create_time_modal.php"); ?>
 		</div>
 	</div>
 	<div class="rightcolumn">
@@ -62,10 +69,9 @@
 			<div style="overflow-x:auto;">
 				<table id="myTable" style="width: 100%;">
 					<tr class="header">
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Check Date</th>
-						<th>Status</th>
+						<th>Name</th>
+						<th>Check IN Date</th>
+						<th>Check OUT Date</th>
 						<th>Approver</th>
 						<th>Approval Status</th>
 						<th>Approval Date</th>
@@ -76,28 +82,24 @@
 						$conn = new mysqli($server, $user, $pass, $db);
 						
 						#search for records with active users
-						#$sql = "SELECT CONTACT.FIRST_NAME, CONTACT.LAST_NAME, TIMETRACK.CHECK_DATE, TIMETRACK.STATUS, (SELECT CONTACT.FIRST_NAME FROM TIMETRACK INNER JOIN CONTACT ON TIMETRACK.APPROVER_ID = CONTACT.ID LIMIT 1) AS APPROVER_FIRST, (SELECT CONTACT.LAST_NAME FROM TIMETRACK INNER JOIN CONTACT ON TIMETRACK.APPROVER_ID = CONTACT.ID LIMIT 1) AS APPROVER_LAST, TIMETRACK.APPROVAL_STATUS, TIMETRACK.MODIFY_DATE FROM TIMETRACK INNER JOIN CONTACT ON TIMETRACK.USER_ID = CONTACT.ID WHERE TIMETRACK.MODIFY_DATE LIKE '".date('Y')."-07%' ORDER BY TIMETRACK.CHECK_DATE ASC";
-						$sql = "SELECT TIMETRACK.ID, FIRST_NAME, LAST_NAME, CHECK_DATE, CHECK_STATUS, APPROVER_FIRST, APPROVER_LAST, APPROVAL_DATE, APPROVAL_STATUS FROM TIMETRACK INNER JOIN CONTACT ON TIMETRACK.USER_ID = CONTACT.ID INNER JOIN APPROVAL ON TIMETRACK.ID = APPROVAL.ID";
+						$sql = "SELECT TIMETRACK.ID, FIRST_NAME, LAST_NAME, CHECK_IN_DATE, CHECK_OUT_DATE, TIMETRACK.STATUS, APPROVER_FIRST, APPROVER_LAST, APPROVAL_DATE, APPROVAL_STATUS FROM TIMETRACK INNER JOIN CONTACT ON TIMETRACK.USER_ID = CONTACT.ID INNER JOIN APPROVAL ON TIMETRACK.ID = APPROVAL.ID";
 						$result = $conn->query($sql);
-						#echo date('Y')."-07%";
 
 						if ($result->num_rows > 0) {
 							while($row = $result->fetch_assoc()) {
 					?>
 					<tr>
-						<td><?php echo $row['FIRST_NAME'] ?></td>
-						<td><?php echo $row['LAST_NAME'] ?></td>
+						<td><?php echo $row['FIRST_NAME']." ".$row['LAST_NAME'] ?></td>
 						<td><?php 
-								$check_date = strtotime($row['CHECK_DATE']);
+								$check_date = strtotime($row['CHECK_IN_DATE']);
 								$check_date_format = date('m-d-Y h:i A', $check_date);
 								echo $check_date_format;
 							?></a></td>
 						<td><?php 
-								$timetrack_status = $row['CHECK_STATUS'];
-								if ($timetrack_status == -1) {/*DELETED*/} 
-								else if ($timetrack_status == 0) {/*CHECK IN*/ echo "Checked In";}
-								else if ($timetrack_status == 1) {/*CHECK OUT*/echo "Checked Out";}
-							?></td>
+								$check_date = strtotime($row['CHECK_OUT_DATE']);
+								$check_date_format = date('m-d-Y h:i A', $check_date);
+								echo $check_date_format;
+							?></a></td>
 						<td><?php echo $row['APPROVER_FIRST']." ".$row['APPROVER_LAST'] ?></td>
 						<td><?php 
 								$approval_status = $row['APPROVAL_STATUS'];
@@ -136,6 +138,9 @@
 
 <link rel="stylesheet" type="text/css" href="css/table_style.css">
 <script type="text/javascript" src="js/filter_table.js"></script>
+<link rel="stylesheet" type="text/css" href="css/modal_style.css">
+<script type="text/javascript" src="js/modal.js"></script>
+<script type="text/javascript" src="js/validate_create_modal.js"></script>
 <script type="text/javascript" src="js/validate_record_delete.js"></script>
 <?php require("html/footer.html");?>
 </body>

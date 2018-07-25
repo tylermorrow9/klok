@@ -21,7 +21,7 @@
                             // Create connection
                             $conn = new mysqli($server, $user, $pass, $db);
 
-                            $sql = "SELECT TEAM.ID, TEAM.NAME, PARENT.NAME AS PARENT_NAME FROM TEAM INNER JOIN TEAM AS PARENT ON TEAM.PARENT_ID = PARENT.ID WHERE TEAM.STATUS != -1 ORDER BY TEAM.ID ASC";
+                            $sql = "SELECT TEAM.ID, TEAM.NAME, PARENT.NAME AS PARENT_NAME FROM TEAM INNER JOIN TEAM AS PARENT ON TEAM.PARENT_ID = PARENT.ID WHERE TEAM.STATUS = 1 ORDER BY TEAM.ID ASC";
                             $result = $conn->query($sql);
 
                             if ($result->num_rows > 0) {

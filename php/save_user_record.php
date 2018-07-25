@@ -42,5 +42,9 @@
 
 	$conn->close();
 
-	header("Location: ../users.php?tok=".$_SESSION["sessiontoken"]);
+	if ($DEBUG_REDIRECT_LINKS) {
+				
+	} else {
+		header("Location: ../users.php?tok=".$_SESSION["sessiontoken"]);
+	}
 ?>

@@ -81,8 +81,13 @@
 				$conn->close();
 				
 				$msg = "Login Success";
-				//redirect URL forward in URL
-				header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
+
+				if ($DEBUG_REDIRECT_LINKS) {
+						
+				} else {
+					//redirect URL forward in URL
+					header("Location: ../dashboard.php?tok=".$_SESSION["sessiontoken"]);
+				}
 			} else {
 				//Do not login and return error
 
@@ -100,17 +105,31 @@
 				$conn->close();
 
 				$msg = "Username or Password does not match";
-				//redirect URL back to index page with error in URL
-				header("Location: ../login.php?msg=".$msg);
+
+				if ($DEBUG_REDIRECT_LINKS) {
+						
+				} else {
+					//redirect URL back to index page with error in URL
+					header("Location: ../login.php?msg=".$msg);
+				}
 			}
 		} else {
 			//Do not login and return error
 			$msg = "Username or Password does not match";
-			//redirect URL back to index page with error in URL
-			header("Location: ../login.php?msg=".$msg);
+
+			if ($DEBUG_REDIRECT_LINKS) {
+					
+			} else {
+				//redirect URL back to index page with error in URL
+				header("Location: ../login.php?msg=".$msg);
+			}
 		}
 	} else {
-		header("Location: ../inactive_system.php");
+		if ($DEBUG_REDIRECT_LINKS) {
+					
+		} else {
+			header("Location: ../inactive_system.php");
+		}		
 	}
 	
 	#used to generate the token

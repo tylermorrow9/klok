@@ -15,6 +15,10 @@ if (isset($_POST['create_team'])) {
 	$database_index = generateID($server, $user, $pass, $db, "TEAM");
     insertTeam($server, $user, $pass, $db, $database_index);
 }
+if (isset($_POST['create_time'])) {
+	$database_index = generateID($server, $user, $pass, $db, "TIMETRACK");
+    insertTime($server, $user, $pass, $db, $database_index);
+}
 
 function generateID($server, $user, $pass, $db, $table) {
 	// Create connection
@@ -63,7 +67,11 @@ function insertUser($server, $user, $pass, $db, $database_index) {
 
 	$conn->close();
 	
-	header("Location: ../users.php?tok=".$_SESSION['sessiontoken']);
+	if ($DEBUG_REDIRECT_LINKS) {
+			
+	} else {
+		header("Location: ../users.php?tok=".$_SESSION['sessiontoken']);
+	}
 }
 
 //used to create team record
@@ -85,6 +93,52 @@ function insertTeam($server, $user, $pass, $db, $database_index) {
 
 	$conn->close();
 
-	header("Location: ../teams.php?tok=".$_SESSION['sessiontoken']);
+	if ($DEBUG_REDIRECT_LINKS) {
+			
+	} else {
+		header("Location: ../teams.php?tok=".$_SESSION['sessiontoken']);
+	}
+}
+
+//used to create time record
+function insertTime($server, $user, $pass, $db, $database_index) {
+	$userID = $_POST['userID'];
+	$checkInDate = $_POST['checkInDate'];
+	$checkInTime = $_POST['checkInTime'];
+	$checkOutDate = $_POST['checkOutDate'];
+	$checkOutTime = $_POST['checkOutTime'];
+	#$statusID = $_POST['statusID'];
+
+	// Create connection
+	$conn = new mysqli($server, $user, $pass, $db);
+
+	$sql = "INSERT INTO TIMETRACK VALUES (".$database_index.", '".$userID."', '".$checkInDate." ".$checkInTime."', '".$checkOutDate." ".$checkOutTime."', '1', '".date('y-m-d H:i:s')."', '".date('y-m-d H:i:s')."')";
+
+	if ($conn->query($sql) === TRUE) {
+	    echo "Time created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+
+	$conn->close();
+
+	// Create connection
+	$conn = new mysqli($server, $user, $pass, $db);
+
+	$sql = "INSERT INTO APPROVAL VALUES (".$database_index.", 0, '', '', '', 0);";
+
+	if ($conn->query($sql) === TRUE) {
+	    echo "Approval created successfully";
+	} else {
+	    echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+
+	$conn->close();
+
+	if ($DEBUG_REDIRECT_LINKS) {
+			
+	} else {
+		header("Location: ../time.php?tok=".$_SESSION['sessiontoken']);
+	}
 }
 ?>

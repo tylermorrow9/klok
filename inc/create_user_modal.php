@@ -17,8 +17,23 @@
                     <td>
                         <select id="managerID" name="managerID">
                             <option value="">Please select...</option>
-                            <option value="1">Admin Admin</option>
-                            <option value="8">Megan Evans</option>
+                        <?php
+                            // Create connection
+                            $conn = new mysqli($server, $user, $pass, $db);
+
+                            $sql = "SELECT ID, FIRST_NAME, LAST_NAME FROM CONTACT WHERE STATUS != -1 ORDER BY ID ASC";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                while($row = $result->fetch_assoc()) {
+                                    echo "<option value='".$row["ID"]."'>".$row["FIRST_NAME"]." ".$row["LAST_NAME"]."</option>";
+                                }
+                            } else {
+                                echo "0 results";
+                            }
+                            $conn->close();
+                        ?>
                         </select>
                     </td>
                 </tr>
@@ -27,9 +42,27 @@
                     <td>
                         <select id="teamID" name="teamID">
                             <option value="">Please select...</option>
-                            <option value="1">Company</option>
-                            <option value="2">Legal</option>
-                            <option value="3">Sales</option>
+                        <?php
+                            // Create connection
+                            $conn = new mysqli($server, $user, $pass, $db);
+
+                            $sql = "SELECT TEAM.ID, TEAM.NAME, PARENT.NAME AS PARENT_NAME FROM TEAM INNER JOIN TEAM AS PARENT ON TEAM.PARENT_ID = PARENT.ID WHERE TEAM.STATUS = 1 ORDER BY TEAM.ID ASC";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                // output data of each row
+                                while($row = $result->fetch_assoc()) {
+                                    if ($row["NAME"] == $row["PARENT_NAME"]) {
+                                        echo "<option value='".$row["ID"]."'>".$row["NAME"]."</option>";
+                                    } else {
+                                        echo "<option value='".$row["ID"]."'>".$row["PARENT_NAME"]." > ".$row["NAME"]."</option>";
+                                    }
+                                }
+                            } else {
+                                echo "0 results";
+                            }
+                            $conn->close();
+                        ?>
                         </select>
                     </td>
                 </tr>

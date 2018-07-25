@@ -26,7 +26,9 @@
 
 	$conn->close();
 	
-	header("Location: ../record_edit.php?tok=".$_SESSION["sessiontoken"]."&userrecord=".$reset_id);
-	
-	
+	if ($DEBUG_REDIRECT_LINKS) {
+				
+	} else {
+		header("Location: ../record_edit.php?tok=".$_SESSION["sessiontoken"]."&userrecord=".$reset_id);
+	}	
 ?>

@@ -11,8 +11,8 @@
 
 <body>
 <?php require("html/header.html"); ?>
-<link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
 <?php include("inc/navigation.php"); ?>
+<link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
 
 <div class="row">
 	<div class="leftcolumn">

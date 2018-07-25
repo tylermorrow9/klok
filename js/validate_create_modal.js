@@ -82,3 +82,40 @@ function validateTeamModal() {
 		return true;
 	}
 }
+
+//validate team create modal
+function validateTimeModal() {
+	var userID = document.getElementById("userID").value;
+	var checkInDate = document.getElementById("checkInDate").value;
+	var checkInTime = document.getElementById("checkInTime").value;
+	var checkOutDate = document.getElementById("checkOutDate").value;
+	var checkOutTime = document.getElementById("checkOutTime").value;
+
+	var error = "";
+
+	if (userID == '') {
+		error += "Please select a User\n";
+	}
+	if (checkInDate == '') {
+		error += "Please input an IN Date\n";
+	}
+	if (checkInTime == '') {
+		error += "Please input an IN Time\n";
+	}
+	if (checkOutDate == '') {
+		error += "Please input an OUT Date\n";
+	}
+	if (checkOutTime == '') {
+		error += "Please input an OUT Time\n";
+	}
+	
+	//check for errors
+	if (error != "") {
+		//show users errors
+		alert(error);
+		return false;
+	} else {
+		//successful submission
+		return true;
+	}
+}

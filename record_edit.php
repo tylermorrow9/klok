@@ -24,7 +24,7 @@
 	<div style="width:100%;">
 		<div class="card">
 			<h2>Edit Record</h2>
-				<table style="width:25%;">
+				<table style="width:30%;">
 				<?php
 					if (isset($_GET['timerecord'])) {
 						echo "<form action='php/save_time_record.php' method='GET'>";
@@ -32,7 +32,7 @@
 						$conn = new mysqli($server, $user, $pass, $db);
 						
 						#search for records with active users
-						$sql = "SELECT CONTACT.FIRST_NAME, CONTACT.LAST_NAME, TIMETRACK.CHECK_DATE, TIMETRACK.CHECK_STATUS FROM TIMETRACK INNER JOIN CONTACT ON CONTACT.ID = TIMETRACK.USER_ID WHERE TIMETRACK.ID = ".$timerecord;
+						$sql = "SELECT CONTACT.FIRST_NAME, CONTACT.LAST_NAME, TIMETRACK.CHECK_IN_DATE, TIMETRACK.CHECK_OUT_DATE, TIMETRACK.STATUS FROM TIMETRACK INNER JOIN CONTACT ON CONTACT.ID = TIMETRACK.USER_ID WHERE TIMETRACK.ID = ".$timerecord;
 						$result = $conn->query($sql);
 
 						if ($result->num_rows > 0) {
@@ -42,25 +42,23 @@
 								echo "<td>".$row['FIRST_NAME']." ".$row['LAST_NAME']."</td>";
 								echo "</tr>";
 								echo "<tr>";
-								echo "<td>Current Check Date: </td>";
-								$check_date = strtotime($row['CHECK_DATE']);
-								$check_date_format = date('m-d-Y h:i A', $check_date);
-								echo "<td>".$check_date_format."</td>";
+								echo "<td>Check IN Date: </td>";
+								$in_date = strtotime($row['CHECK_IN_DATE']);
+								$check_in_date = date('Y-m-d', $in_date);
+								$check_in_time = date('H:i', $in_date);
+								echo "<td><input type='date' name='newCheckInDate' value='".$check_in_date."'></td>";
+								echo "<td><input type='time' name='newCheckInTime' value='".$check_in_time."'></td>";
 								echo "</tr>";
 								echo "<tr>";
-								echo "<td>New Check Date: </td>";
-								echo "<td><input type='datetime-local' name='newCheckDate'></td>";
+								echo "<td>Check OUT Date: </td>";
+								$out_date = strtotime($row['CHECK_OUT_DATE']);
+								$check_out_date = date('Y-m-d', $out_date);
+								$check_out_time = date('H:i', $out_date);
+								echo "<td><input type='date' name='newCheckOutDate' value='".$check_out_date."'></td>";
+								echo "<td><input type='time' name='newCheckOutTime' value='".$check_out_time."'></td>";
 								echo "</tr>";
 								echo "<tr>";
-								echo "<td>Status: </td>";
-								if ($row['CHECK_STATUS'] == 1) {
-									echo "<td><select name='newCheckStatus'><option value='1' selected>Check Out</option><option value='0'>Check In</option></select></td>";
-								} else {
-									echo "<td><select name='newCheckStatus'><option value='1'>Check Out</option><option value='0' selected>Check In</option></select></td>";
-								}
 								echo "<td><input type='hidden' name='recordID' value=".$timerecord."></td>";
-								echo "<td><input type='hidden' name='oldCheckDate' value='".$row['CHECK_DATE']."'></td>";
-								echo "<td><input type='hidden' name='newerCheckDate' value='".$row['CHECK_DATE']."'></td>";
 								echo "</tr>";
 								echo "<tr>";
 								echo "<td><input type='submit' class='button'><button class='button' onClick='window.history.back()'>Cancel</button></td>";
@@ -116,7 +114,11 @@
 								$teamresult = $teamconn->query($teamsql);
 								if ($teamresult->num_rows > 0) {
 									while($rowz = $teamresult->fetch_assoc()) {
-								echo "<option value='".$rowz['ID']."'>".$rowz['PARENT_NAME']." > ".$rowz['NAME']."</option>";
+										if ($rowz['PARENT_NAME'] == $rowz['NAME']) {
+											echo "<option value='".$rowz['ID']."'>".$rowz['PARENT_NAME']."</option>";
+										} else if ($rowz['PARENT_NAME'] != $rowz['NAME']) {
+											echo "<option value='".$rowz['ID']."'>".$rowz['PARENT_NAME']." > ".$rowz['NAME']."</option>";
+										}
 									}
 								}
 								$teamconn->close();

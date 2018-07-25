@@ -8,8 +8,9 @@
 	<a href="<?php echo 'payroll.php?tok='.$_SESSION["sessiontoken"]; ?>">Payroll</a>
 	<?php } ?>
 	<div class="dropdown">
-	<button class="dropbtn">Account</button>
+	<button class="dropbtn">Structure</button>
 		<div class="dropdown-content">
+			<a href="<?php echo 'approval.php?tok='.$_SESSION["sessiontoken"]; ?>">Approvals</a>
 			<a href="<?php echo 'teams.php?tok='.$_SESSION["sessiontoken"]; ?>">Teams</a>
 			<a href="<?php echo 'users.php?tok='.$_SESSION["sessiontoken"]; ?>">Users</a>
 		</div>
